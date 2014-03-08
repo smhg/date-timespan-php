@@ -1,0 +1,14 @@
+{
+    "name": "smhg/date-timespan",
+    "description": "Timespan classes",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "smhg",
+            "email": "sam@strictlyphp.com"
+        }
+    ],
+    "require-dev": {
+        "phpunit/phpunit": "*"
+    }
+}
