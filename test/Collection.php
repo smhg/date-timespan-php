@@ -40,20 +40,37 @@ class CollectionTest extends PHPUnit_Framework_TestCase
      */
     public function testDiff($collection)
     {
+        $new = clone $collection;
+        foreach ($new as &$span) {
+            $span->start->modify('+5 days');
+            $span->end->modify('+5 days');
+        }
+
+        $diff = $collection->diff($new);
+        $this->assertEquals($collection[0]->start, $diff[0]->start);
+        $firstEnd = clone $collection[0]->end;
+        $this->assertEquals($firstEnd->modify('-2 days'), $diff[0]->end);
     }
 
     /**
+     * Tests sort,compress and merge
      * @depends testConstructor
      */
-    public function testMerge($collection)
+    public function testMerge($original)
     {
-    }
+        $collection = clone $original;
+        $new = clone $collection;
+        foreach ($new as &$span) {
+            $span->start->modify('+5 days');
+            $span->end->modify('+5 days');
+        }
+        $new->exchangeArray(array_reverse($new->getArrayCopy()));
 
-    /**
-     * @depends testConstructor
-     */
-    public function testCompress($collection)
-    {
+        $collection->merge($new);
+        $this->assertTrue(count($original) === count($collection));
+        $this->assertEquals($original[0]->start, $collection[0]->start);
+        $firstEnd = clone $original[0]->end;
+        $this->assertEquals($firstEnd->modify('+5 days'), $collection[0]->end);
     }
 
     /**

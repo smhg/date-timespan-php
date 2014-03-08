@@ -122,4 +122,11 @@ class Collection extends \ArrayObject
             return (string)$span;
         }, $this->getArrayCopy()), "\n");
     }
+
+    public function __clone()
+    {
+        foreach ($this as $key => $span) {
+            $this[$key] = clone $span;
+        }
+    }
 }
