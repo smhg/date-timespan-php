@@ -1,5 +1,6 @@
 <?php
-require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../src/Timespan/Timespan.php';
+require_once __DIR__ . '/../src/Timespan/Collection.php';
 
 use Timespan\Timespan;
 
@@ -87,9 +88,14 @@ class TimespanTest extends PHPUnit_Framework_TestCase
     /**
      * @depends testConstructor
      */
-    public function testDiff($span)
+    public function testDiff($original)
     {
-
+        $span = clone $original;
+        $new = clone $span;
+        $new->start->modify('-3 days');
+        $new->end->modify('-3 days');
+        $result = $span->diff($new);
+        $this->assertTrue(count($result) === 1);
     }
 
     /**
