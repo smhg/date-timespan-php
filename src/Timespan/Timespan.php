@@ -33,12 +33,7 @@ class Timespan
      */
     public function overlaps(Timespan $span)
     {
-        return $this->start < $span->end && $span->start < $this->end;
-    }
-
-    public function canBeCompressedWith(Timespan $span)
-    {
-        return ($this->overlaps($span) || $this->end == $span->start || $this->start == $span->end);
+        return $this->start <= $span->end && $span->start <= $this->end;
     }
 
     /**
@@ -83,12 +78,13 @@ class Timespan
      */
     public function merge(Timespan $span)
     {
-        if ($this->start > $span->start) {
-            $this->start = $span->start;
-        }
-
-        if ($this->end < $span->end) {
-            $this->end = $span->end;
+        if ($this->overlaps($span)) {
+            if ($this->start > $span->start) {
+                $this->start = $span->start;
+            }
+            if ($this->end < $span->end) {
+                $this->end = $span->end;
+            }
         }
 
         return $this;
