@@ -67,28 +67,19 @@ class TimespanTest extends PHPUnit_Framework_TestCase
      */
     public function testOverlaps($span)
     {
-        $start = clone $span->start;
-        $start->modify('+3 day');
-        $end = clone $start;
-        $end->modify('+1 week');
-
-        $new = new Timespan($start, $end);
+        $new = clone $span;
+        $new->start->modify('+3 day');
+        $new->end->modify('+1 week');
         $this->assertTrue($new->overlaps($span));
         $this->assertTrue($span->overlaps($new));
 
-        $start = clone $span->start;
-        $end = clone $span->end;
-
-        $new = new Timespan($start, $end);
+        $new = clone $span;
         $this->assertTrue($new->overlaps($span));
         $this->assertTrue($span->overlaps($new));
 
-        $start = clone $span->start;
-        $start->modify('+2 week');
-        $end = clone $start;
-        $end->modify('+1 week');
-
-        $new = new Timespan($start, $end);
+        $new = clone $span;
+        $new->start->modify('+2 week');
+        $new->end->modify('+1 week');
         $this->assertFalse($new->overlaps($span));
         $this->assertFalse($span->overlaps($new));
     }
@@ -114,20 +105,16 @@ class TimespanTest extends PHPUnit_Framework_TestCase
      */
     public function testCompare($span)
     {
-        $start = clone $span->start;
-        $start->modify('+1 week');
-        $end = clone $start;
-        $end->modify('+1 week');
-        $this->assertEquals(-1, $span->compare(new Timespan($start, $end)));
+        $new = clone $span;
+        $new->start->modify('+1 week');
+        $new->end->modify('+1 week');
+        $this->assertEquals(-1, $span->compare($new));
 
-        $start = clone $span->start;
-        $start->modify('-1 week');
-        $end = clone $start;
-        $end->modify('+1 week');
-        $this->assertEquals(1, $span->compare(new Timespan($start, $end)));
+        $new = clone $span;
+        $new->start->modify('-1 week');
+        $new->end->modify('+1 week');
+        $this->assertEquals(1, $span->compare($new));
 
-        $start = clone $span->start;
-        $end = clone $span->end;
-        $this->assertEquals(0, $span->compare(new Timespan($start, $end)));
+        $this->assertEquals(0, $span->compare(clone $span));
     }
 }

@@ -130,6 +130,12 @@ class Timespan
         );
     }
 
+    public function __clone()
+    {
+        $this->start = clone $this->start;
+        $this->end = clone $this->end;
+    }
+
     /**
      * Convert the timespan to an array
      * @return string
