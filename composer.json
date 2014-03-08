@@ -2,13 +2,24 @@
     "name": "smhg/date-timespan",
     "description": "Timespan classes",
     "license": "MIT",
+    "keywords": [
+        "timespan"
+    ],
     "authors": [
         {
             "name": "smhg",
             "email": "sam@strictlyphp.com"
         }
     ],
+    "require": {
+        "php": ">=5.3.0"
+    },
     "require-dev": {
         "phpunit/phpunit": "*"
+    },
+    "autoload": {
+        "psr-0": {
+            "Timespan": "src/"
+        }
     }
 }
