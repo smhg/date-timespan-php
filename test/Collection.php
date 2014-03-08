@@ -61,7 +61,7 @@ class CollectionTest extends PHPUnit_Framework_TestCase
      */
     public function testToArray($collection)
     {
-        $collection->toArray();
+        $this->assertTrue(count($collection->toArray()) > 0);
     }
 
     /**
@@ -69,5 +69,6 @@ class CollectionTest extends PHPUnit_Framework_TestCase
      */
     public function testToString($collection)
     {
+        $this->assertTrue(is_string((string)$collection));
     }
 }
