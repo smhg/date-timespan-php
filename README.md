@@ -23,14 +23,11 @@ $timespan = new Timespan($start, $end);
 #### contains(DateTime)
 Returns whether the timespan contains a date.
 
-#### contains(DateTime)
-Returns whether the timespan contains a date.
-
 #### overlaps(Timespan)
 Returns whether the timespan overlaps with another timespan.
 
 #### diff(Timespan)
-Returns a collection of timespans which do not appear in another timespan.
+Returns a collection of timespans (pieces of the original timespan) which do not appear in another timespan.
 
 #### merge(Timespan)
 Returns a collection with the merged timespan or both timespans when a merge was not possible.
