@@ -13,7 +13,7 @@ $ composer require smhg/date-timespan
 ```php
 use Timespan\Timespan;
 
-$start = DateTime::createFromFormat('last monday');
+$start = new DateTime('last monday');
 $end = clone $start;
 $end->modify('+1 week');
 

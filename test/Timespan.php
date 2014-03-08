@@ -8,8 +8,7 @@ class TimespanTest extends PHPUnit_Framework_TestCase
 {
     public function testConstructor()
     {
-        $start = new DateTime();
-        $start->modify('this monday');
+        $start = new DateTime('this monday');
         $end = clone $start;
         $end->modify('+1 week');
 
@@ -38,7 +37,7 @@ class TimespanTest extends PHPUnit_Framework_TestCase
      */
     public function testToPeriod($span)
     {
-        $period = $span->toPeriod(new \DateInterval('P1D'));
+        $period = $span->toPeriod(new DateInterval('P1D'));
         $this->assertInstanceOf('DatePeriod', $period);
         $arr = iterator_to_array($period);
         $this->assertEquals($span->start, reset($arr));
