@@ -90,12 +90,52 @@ class TimespanTest extends PHPUnit_Framework_TestCase
      */
     public function testDiff($original)
     {
+        // cut out at the beginning
         $span = clone $original;
         $new = clone $span;
         $new->start->modify('-3 days');
         $new->end->modify('-3 days');
         $result = $span->diff($new);
         $this->assertTrue(count($result) === 1);
+        $first = reset($result);
+        $this->assertEquals($new->end, $first->start);
+        $this->assertEquals($original->end, $first->end);
+
+        // cut out at the end
+        $span = clone $original;
+        $new = clone $span;
+        $new->start->modify('+3 days');
+        $new->end->modify('+3 days');
+        $result = $span->diff($new);
+        $this->assertTrue(count($result) === 1);
+        $first = reset($result);
+        $this->assertEquals($original->start, $first->start);
+        $this->assertEquals($new->start, $first->end);
+
+        // cut out in the middle
+        $span = clone $original;
+        $new = clone $span;
+        $new->start->modify('+3 days');
+        $new->end->modify('-3 days');
+        $result = $span->diff($new);
+        $this->assertTrue(count($result) === 2);
+        $first = reset($result);
+        $this->assertEquals($original->start, $first->start);
+        $this->assertEquals($new->start, $first->end);
+        $last = end($result);
+        $this->assertEquals($new->end, $last->start);
+        $this->assertEquals($original->end, $last->end);
+
+        // no overlap
+        $span = clone $original;
+        $new = clone $span;
+        $new->start->modify('+2 weeks');
+        $new->end->modify('+2 weeks');
+        $result = $span->diff($new);
+        $this->assertTrue(count($result) === 1);
+        $first = reset($result);
+        $this->assertEquals($original->start, $first->start);
+        $this->assertEquals($original->end, $first->end);
     }
 
     /**
