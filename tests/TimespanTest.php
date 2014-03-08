@@ -114,6 +114,20 @@ class TimespanTest extends PHPUnit_Framework_TestCase
      */
     public function testCompare($span)
     {
+        $start = clone $span->start;
+        $start->modify('+1 week');
+        $end = clone $start;
+        $end->modify('+1 week');
+        $this->assertEquals(-1, $span->compare(new Timespan($start, $end)));
 
+        $start = clone $span->start;
+        $start->modify('-1 week');
+        $end = clone $start;
+        $end->modify('+1 week');
+        $this->assertEquals(1, $span->compare(new Timespan($start, $end)));
+
+        $start = clone $span->start;
+        $end = clone $span->end;
+        $this->assertEquals(0, $span->compare(new Timespan($start, $end)));
     }
 }
