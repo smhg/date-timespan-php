@@ -95,9 +95,45 @@ class TimespanTest extends PHPUnit_Framework_TestCase
     /**
      * @depends testConstructor
      */
-    public function testMerge($span)
+    public function testMerge($original)
     {
+        $span = clone $original;
+        $new = clone $original;
+        $new->start->modify('-3 days');
+        $new->end->modify('-3 days');
+        $span->merge($new);
+        $this->assertEquals($new->start, $span->start);
+        $this->assertEquals($original->end, $span->end);
 
+        $span = clone $original;
+        $new = clone $original;
+        $new->start->modify('+3 days');
+        $new->end->modify('+3 days');
+        $span->merge($new);
+        $this->assertEquals($original->start, $span->start);
+        $this->assertEquals($new->end, $span->end);
+
+        $span = clone $original;
+        $new = clone $original;
+        $span->merge($new);
+        $this->assertEquals($original->start, $span->start);
+        $this->assertEquals($original->end, $span->end);
+
+        $span = clone $original;
+        $new = clone $original;
+        $new->start->modify('-3 days');
+        $new->end->modify('+3 days');
+        $span->merge($new);
+        $this->assertEquals($new->start, $span->start);
+        $this->assertEquals($new->end, $span->end);
+
+        $span = clone $original;
+        $new = clone $original;
+        $new->start->modify('+3 days');
+        $new->end->modify('-3 days');
+        $span->merge($new);
+        $this->assertEquals($original->start, $span->start);
+        $this->assertEquals($original->end, $span->end);
     }
 
     /**
