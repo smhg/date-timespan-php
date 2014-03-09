@@ -63,7 +63,7 @@ class Collection extends \ArrayObject
         for ($i = 0;$i < $length;) {
             $tmp = $this->getArrayCopy();
             $merge = $tmp[$i]->merge($tmp[$i + 1]);
-            if (count($merge) === 2 && $merge[0] === $tmp[$i] && $merge[1] === $tmp[$i + 1]) {
+            if (count($merge) === 2 && $merge[0] == $tmp[$i] && $merge[1] == $tmp[$i + 1]) {
                 $i++;
             } else {
                 array_splice($tmp, $i, 2, $merge->getArrayCopy());
