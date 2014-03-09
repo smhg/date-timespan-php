@@ -70,8 +70,6 @@ class Collection extends \ArrayObject
             $length = count($this) - 1;
         }
 
-        $this->exchangeArray($tmp);
-
         return $this;
     }
 
