@@ -58,17 +58,16 @@ class Collection extends \ArrayObject
     {
         $this->sort();
 
-        $tmp = $this->getArrayCopy();
-        $length = count($tmp) - 1;
+        $length = count($this) - 1;
 
-        for ($i = 0;$i < $length;$i++) {
-            if ($tmp[$i]->overlaps($tmp[$i + 1])) {
-                $tmp[$i]->merge($tmp[$i + 1]);
-                unset($tmp[$i + 1]);
-                $tmp = array_values($tmp);
-                $length = count($tmp) - 1;
-                $i--;
-            }
+        for ($i = 0;$i < $length;) {
+            $tmp = $this->getArrayCopy();
+            $merge = $tmp[$i]->merge($tmp[$i + 1]);
+            array_splice($tmp, $i, 2, $merge->getArrayCopy());
+            $this->exchangeArray($tmp);
+            $this->sort();
+            $i += count($merge);
+            $length = count($this) - 1;
         }
 
         $this->exchangeArray($tmp);

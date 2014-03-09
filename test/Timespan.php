@@ -140,45 +140,43 @@ class TimespanTest extends PHPUnit_Framework_TestCase
     /**
      * @depends testConstructor
      */
-    public function testMerge($original)
+    public function testMerge($span)
     {
-        $span = clone $original;
-        $new = clone $original;
+        $new = clone $span;
         $new->start->modify('-3 days');
         $new->end->modify('-3 days');
-        $span->merge($new);
-        $this->assertEquals($new->start, $span->start);
-        $this->assertEquals($original->end, $span->end);
+        $col = $span->merge($new);
+        $this->assertEquals(1, count($col));
+        $this->assertEquals($new->start, $col[0]->start);
+        $this->assertEquals($span->end, $col[0]->end);
 
-        $span = clone $original;
-        $new = clone $original;
+        $new = clone $span;
         $new->start->modify('+3 days');
         $new->end->modify('+3 days');
-        $span->merge($new);
-        $this->assertEquals($original->start, $span->start);
-        $this->assertEquals($new->end, $span->end);
+        $col = $span->merge($new);
+        $this->assertEquals(1, count($col));
 
-        $span = clone $original;
-        $new = clone $original;
-        $span->merge($new);
-        $this->assertEquals($original->start, $span->start);
-        $this->assertEquals($original->end, $span->end);
+        $new = clone $span;
+        $col = $span->merge($new);
+        $this->assertEquals(1, count($col));
 
-        $span = clone $original;
-        $new = clone $original;
+        $new = clone $span;
         $new->start->modify('-3 days');
         $new->end->modify('+3 days');
-        $span->merge($new);
-        $this->assertEquals($new->start, $span->start);
-        $this->assertEquals($new->end, $span->end);
+        $col = $span->merge($new);
+        $this->assertEquals(1, count($col));
 
-        $span = clone $original;
-        $new = clone $original;
+        $new = clone $span;
         $new->start->modify('+3 days');
         $new->end->modify('-3 days');
-        $span->merge($new);
-        $this->assertEquals($original->start, $span->start);
-        $this->assertEquals($original->end, $span->end);
+        $col = $span->merge($new);
+        $this->assertEquals(1, count($col));
+
+        $new = clone $span;
+        $new->start->modify('+14 days');
+        $new->end->modify('+14 days');
+        $col = $span->merge($new);
+        $this->assertEquals(2, count($col));
     }
 
     /**

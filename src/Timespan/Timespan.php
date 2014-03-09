@@ -74,18 +74,27 @@ class Timespan
     /**
      * Merge the timespan with another one (if possible)
      * @param Timespan $span
-     * @return Timespan
+     * @return Collection
      */
     public function merge(Timespan $span)
     {
-        if ($this->start > $span->start) {
-            $this->start = $span->start;
-        }
-        if ($this->end < $span->end) {
-            $this->end = $span->end;
+        $result = new Collection();
+
+        if ($this->overlaps($span)) {
+            $start = $this->start > $span->start ? $span->start : $this->start;
+            $end = $this->end < $span->end ? $span->end : $this->end;
+            $result[] = new $this($start, $end);
+        } else {
+            if ($this->start <= $span->start) {
+                $result[] = $this;
+                $result[] = $span;
+            } else {
+                $result[] = $span;
+                $result[] = $this;
+            }
         }
 
-        return $this;
+        return $result;
     }
 
     /**
