@@ -78,13 +78,11 @@ class Timespan
      */
     public function merge(Timespan $span)
     {
-        if ($this->overlaps($span)) {
-            if ($this->start > $span->start) {
-                $this->start = $span->start;
-            }
-            if ($this->end < $span->end) {
-                $this->end = $span->end;
-            }
+        if ($this->start > $span->start) {
+            $this->start = $span->start;
+        }
+        if ($this->end < $span->end) {
+            $this->end = $span->end;
         }
 
         return $this;
@@ -110,7 +108,7 @@ class Timespan
      */
     public function toPeriod(DateInterval $interval)
     {
-        $end = clone ($this->end);
+        $end = clone $this->end;
         return new DatePeriod($this->start, $interval, $end->modify('+1 second'));
     }
 

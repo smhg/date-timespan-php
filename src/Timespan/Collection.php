@@ -51,7 +51,7 @@ class Collection extends \ArrayObject
     }
 
     /**
-     * Merge the timespans in this collection together if possible
+     * Merge timespans in this collection together when possible
      * @return Collection
      */
     public function compress()
