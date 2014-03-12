@@ -32,6 +32,9 @@ Returns a collection of timespans (pieces of the original timespan) which do not
 #### merge(Timespan)
 Returns a collection with the merged timespan or both timespans when a merge was not possible.
 
+#### trim(DateTime, DateTime)
+Trims the timespan to fit within passed boundaries.
+
 #### compare(Timespan)
 Returns whether the timespan occurs before, together or after another timespan.
 
