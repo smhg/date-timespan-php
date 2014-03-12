@@ -182,6 +182,24 @@ class TimespanTest extends PHPUnit_Framework_TestCase
     /**
      * @depends testConstructor
      */
+    public function testTrim($span)
+    {
+        $tmp = clone $span;
+        $start = clone $tmp->start;
+        $start->modify('+1 day');
+        $tmp->trim($start, $tmp->end);
+        $this->assertEquals($start, $tmp->start);
+
+        $tmp = clone $span;
+        $end = clone $tmp->end;
+        $end->modify('-1 day');
+        $tmp->trim($tmp->start, $end);
+        $this->assertEquals($end, $tmp->end);
+    }
+
+    /**
+     * @depends testConstructor
+     */
     public function testCompare($span)
     {
         $new = clone $span;

@@ -17,7 +17,7 @@ class Timespan
     }
 
     /**
-     * Check whether the timespan contains a date
+     * Check whether timespan contains a date
      * @param DateTime $date
      * @return boolean
      */
@@ -27,7 +27,7 @@ class Timespan
     }
 
     /**
-     * Check whether the timespan overlaps with another timespan
+     * Check whether timespan overlaps with another timespan
      * @param Timespan $span
      * @return boolean
      */
@@ -37,7 +37,7 @@ class Timespan
     }
 
     /**
-     * Get parts of the timespan which don't appear in another timespan
+     * Get parts of timespan which don't appear in another timespan
      * @param Timespan $span
      * @return Collection
      */
@@ -72,7 +72,7 @@ class Timespan
     }
 
     /**
-     * Merge the timespan with another one (if possible)
+     * Merge timespan with another one (if possible)
      * @param Timespan $span
      * @return Collection
      */
@@ -98,7 +98,26 @@ class Timespan
     }
 
     /**
-     * Compare the timespan with another timespan
+     * Trim timespan to fit within boundaries
+     * @param  DateTime $start
+     * @param  DateTime $end
+     * @return Timespan
+     */
+    public function trim(DateTime $start, DateTime $end)
+    {
+        if ($this->start < $start) {
+            $this->start = $start;
+        }
+
+        if ($this->end > $end) {
+            $this->end = $end;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Compare timespan with another timespan
      * @param Timespan $span
      * @return boolean
      */
@@ -111,7 +130,7 @@ class Timespan
     }
 
     /**
-     * Convert the timespan into a period based on an interval
+     * Convert timespan into a period based on an interval
      * @param DateInterval $interval
      * @return DatePeriod
      */
@@ -122,7 +141,7 @@ class Timespan
     }
 
     /**
-     * Convert the timespan to an array
+     * Convert timespan to an array
      * @return array
      */
     public function toArray()
@@ -140,7 +159,7 @@ class Timespan
     }
 
     /**
-     * Convert the timespan to an array
+     * Convert timespan to an array
      * @return string
      */
     public function __toString()
