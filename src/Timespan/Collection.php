@@ -69,10 +69,13 @@ class Collection extends \ArrayObject
                 $diff = $tmp[$i]->diff($collection[$j])->getArrayCopy();
 
                 if (empty($diff)) {
+                    // remove left item, proceed to next
                     array_splice($tmp, $i, 1);
+                    $i--;
                     $resultLength--;
+                    break;
                 } else {
-                    // replace item with first item from diff
+                    // replace left item with first item from diff
                     array_splice($tmp, $i, 1, array_splice($diff, 0, 1));
                     if (!empty($diff)) {
                         // if diff has second item, insert at right location
