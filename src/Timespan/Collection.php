@@ -25,17 +25,79 @@ class Collection extends \ArrayObject
 
     public function diff(Collection $collection)
     {
+        $this->compress();
         $result = clone $this;
 
-        foreach ($collection as $span2) {
-            $tmp = array();
-            foreach ($result->getArrayCopy() as $span) {
-                $tmp = array_merge($tmp, $span->diff($span2)->getArrayCopy());
-            }
-            $result->exchangeArray($tmp);
+        if ($collection->isEmpty()) {
+            return $result;
         }
 
-        return $result;
+        $collection->compress();
+
+        $resultLength = count($result);
+        $lastRight = end($collection);
+        $firstRight = reset($collection);
+        $collectionLength = count($collection);
+
+        $tmp = $result->getArrayCopy();
+
+        $j = 0;
+        for ($i = 0; $i < $resultLength; $i++) {
+            if ($tmp[$i]->end <= $firstRight->start) {
+                // before first right, go to next
+                continue;
+            }
+
+            if ($tmp[$i]->start >= $lastRight->end) {
+                // after last right, end
+                break;
+            }
+
+            for (; $j < $collectionLength;) {
+                if ($collection[$j]->end <= $tmp[$i]->start) {
+                    // right item is before current left, go to next right
+                    $j++;
+                    continue;
+                }
+
+                if ($collection[$j]->start >= $tmp[$i]->end) {
+                    // right item is after current left, done
+                    break;
+                }
+
+                // right item intersects with current left, do diff
+                $diff = $tmp[$i]->diff($collection[$j])->getArrayCopy();
+
+                if (empty($diff)) {
+                    array_splice($tmp, $i, 1);
+                    $resultLength--;
+                } else {
+                    // replace item with first item from diff
+                    array_splice($tmp, $i, 1, array_splice($diff, 0, 1));
+                    if (!empty($diff)) {
+                        // if diff has second item, insert at right location
+                        for ($k = $i + 1; $k < $resultLength; $k++) {
+                            if ($tmp[$k]->compare($diff[0]) > 0) {
+                                array_splice($tmp, $k, 0, array_splice($diff, 0, 1));
+                                $resultLength++;
+                                break;
+                            }
+
+                        }
+
+                        // right location = append at end
+                        if (!empty($diff)) {
+                            $tmp[] = $diff[0];
+                            $resultLength++;
+                        }
+                    }
+                }
+            }
+        }
+
+        $result->exchangeArray($tmp);
+
+        return $result->compress();
     }
 
     /**
@@ -58,18 +120,33 @@ class Collection extends \ArrayObject
     {
         $this->sort();
 
-        $length = count($this) - 1;
+        $length = count($this);
 
-        for ($i = 0;$i < $length;) {
+        for ($i = 0; $i < $length - 1;) {
             $tmp = $this->getArrayCopy();
-            $merge = $tmp[$i]->merge($tmp[$i + 1]);
-            if (count($merge) === 2 && $merge[0] == $tmp[$i] && $merge[1] == $tmp[$i + 1]) {
+
+            $merge = $tmp[$i]->merge($tmp[$i + 1])->getArrayCopy();
+
+            if (count($merge) === 2 && $merge == array_slice($tmp, $i, 2)) { // no change after merge
                 $i++;
-            } else {
-                array_splice($tmp, $i, 2, $merge->getArrayCopy());
+            } else { // merge returned something new
+                // replace original elements with first merge result (which is always in order)
+                array_splice($tmp, $i, 2, array_splice($merge, 0, 1));
+                $length--;
+
+                // insert remaining merge results at right location
+                for ($j = $i + 1; !empty($merge) && $j < $length; $j++) {
+                    if ($tmp[$j]->compare($merge[0]) > 0) {
+                        array_splice($tmp, $j, 0, array_splice($merge, 0, 1));
+                        $length++;
+                    }
+                }
+
+                // append remaining merge results to end
+                $tmp = array_merge($tmp, $merge);
+                $length += count($merge);
+
                 $this->exchangeArray($tmp);
-                $this->sort();
-                $length = count($this) - 1;
             }
         }
 
@@ -82,7 +159,7 @@ class Collection extends \ArrayObject
      */
     public function sort()
     {
-        $this->uasort(function ($span1, $span2) {
+        $this->uasort(function (Timespan $span1, Timespan $span2) {
             return $span1->compare($span2);
         });
 

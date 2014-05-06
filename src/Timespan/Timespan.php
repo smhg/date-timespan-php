@@ -48,7 +48,7 @@ class Timespan
         if (!$this->overlaps($span)) {
             $collection[] = clone $this;
         } else {
-            if ($span->start <= $this->start) {
+            if ($span->compare($this) <= 0) {
                 // start before/together
                 if ($this->end > $span->end) {
                     // eindigt erin
@@ -72,7 +72,7 @@ class Timespan
     }
 
     /**
-     * Merge timespan with another one (if possible)
+     * Merge timespan with another one and return a collection with 1 or 2 new timespans
      * @param Timespan $span
      * @return Collection
      */
@@ -81,11 +81,11 @@ class Timespan
         $result = new Collection();
 
         if ($this->overlaps($span)) {
-            $start = $this->start > $span->start ? $span->start : $this->start;
+            $start = $this->compare($span) > 0 ? $span->start : $this->start;
             $end = $this->end < $span->end ? $span->end : $this->end;
             $result[] = new $this($start, $end);
         } else {
-            if ($this->start <= $span->start) {
+            if ($this->compare($span) <= 0) {
                 $result[] = $this;
                 $result[] = $span;
             } else {
