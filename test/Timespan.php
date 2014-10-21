@@ -184,17 +184,34 @@ class TimespanTest extends PHPUnit_Framework_TestCase
      */
     public function testTrim($span)
     {
-        $tmp = clone $span;
-        $start = clone $tmp->start;
+        $start = clone $span->start;
         $start->modify('+1 day');
-        $tmp->trim($start, $tmp->end);
-        $this->assertEquals($start, $tmp->start);
+        $trimmed = $span->trim($start, $span->end);
+        $this->assertTrue($trimmed !== $span, 'Trim should not mutate the original span, but return a new one.');
+        $this->assertEquals($start, $trimmed->start);
+        $this->assertNotEquals($span->start, $trimmed->start);
 
-        $tmp = clone $span;
-        $end = clone $tmp->end;
+        $end = clone $span->end;
         $end->modify('-1 day');
-        $tmp->trim($tmp->start, $end);
-        $this->assertEquals($end, $tmp->end);
+        $trimmed = $span->trim($span->start, $end);
+        $this->assertEquals($end, $trimmed->end);
+        $this->assertNotEquals($span->end, $trimmed->end);
+
+        $start = clone $span->start;
+        $start->modify('+2 week');
+        $end = clone $span->end;
+        $end->modify('+2 week');
+        $this->assertTrue(!$span->trim($start, $end), 'Trim should not return anything if no time is left inside the span.');
+
+        $start = clone $span->start;
+        $start->modify('-2 week');
+        $end = clone $span->end;
+        $end->modify('-2 week');
+        $this->assertTrue(!$span->trim($start, $end), 'Trim should not return anything if no time is left inside the span.');
+
+        $start = clone $span->start;
+        $start->modify('+1 day');
+        $this->assertTrue(!$span->trim($start, $start), 'Trim should not return anything if no time is left inside the span.');
     }
 
     /**

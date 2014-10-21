@@ -101,19 +101,29 @@ class Timespan
      * Trim timespan to fit within boundaries
      * @param  DateTime $start
      * @param  DateTime $end
-     * @return Timespan
+     * @return Timespan A new, trimmed, timespan
      */
     public function trim(DateTime $start, DateTime $end)
     {
-        if ($this->start < $start) {
-            $this->start = $start;
+        $trimmed = clone $this;
+
+        if ($start > $trimmed->end || $end < $trimmed->start) {
+            return;
         }
 
-        if ($this->end > $end) {
-            $this->end = $end;
+        if ($trimmed->start < $start) {
+            $trimmed->start = $start;
         }
 
-        return $this;
+        if ($trimmed->end > $end) {
+            $trimmed->end = $end;
+        }
+
+        if ($trimmed->start == $trimmed->end) {
+            return;
+        }
+
+        return $trimmed;
     }
 
     /**
