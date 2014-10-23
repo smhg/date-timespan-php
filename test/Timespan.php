@@ -212,6 +212,12 @@ class TimespanTest extends PHPUnit_Framework_TestCase
         $start = clone $span->start;
         $start->modify('+1 day');
         $this->assertTrue(!$span->trim($start, $start), 'Trim should not return anything if no time is left inside the span.');
+
+        $start = clone $span->start;
+        $start->modify('-1 week');
+        $end = clone $span->end;
+        $end->modify('-1 week');
+        $this->assertTrue(!$span->trim($start, $end), 'Trim should not return anything if boundaries touch, but don\'t overlap.');
     }
 
     /**

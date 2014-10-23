@@ -33,7 +33,7 @@ Returns a collection of timespans (pieces of the original timespan) which do not
 Returns a collection with the merged timespan or both timespans when a merge was not possible.
 
 #### trim(DateTime, DateTime)
-Trims the timespan to fit within passed boundaries.
+Returns a new timespan fitting within the passed boundaries or `null` if no time remains.
 
 #### compare(Timespan)
 Returns whether the timespan occurs before, together or after another timespan.
