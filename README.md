@@ -3,6 +3,8 @@ date-timespan [![Build status](https://api.travis-ci.org/smhg/date-timespan-php.
 
 Collection of PHP classes to work with timespans.
 
+It differs from [DatePeriod](http://php.net/manual/en/class.dateperiod.php) in that it only defines a timespan/period by a start and end date. It offers _algebraic_ methods to manipulate a timespan or a collection of them. Convert it to a DatePeriod passing a DateInterval to `toPeriod()` when you need to iterate over it.
+
 ## Installation
 ```bash
 $ composer require smhg/date-timespan
