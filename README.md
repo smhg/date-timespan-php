@@ -43,8 +43,11 @@ Returns whether the timespan occurs before, together or after another timespan.
 #### toPeriod(DateInterval)
 Converts the timespan to a [DatePeriod](http://www.php.net/dateperiod) using an interval.
 
+#### __toString()
+Converts the timespan to a string in [ISO 8601 time interval](https://en.wikipedia.org/wiki/ISO_8601#Time_intervals) format.
+
 #### toArray()
-Converts the timespan to an array containing the `start` and `end` dates.
+Converts the timespan to an array with a single `interval` element containing the `toString` representation.
 
 ### Collection
 ```php

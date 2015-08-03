@@ -157,8 +157,7 @@ class Timespan
     public function toArray()
     {
         return array(
-            'start' => $this->start->format('c'),
-            'end' => $this->end->format('c')
+            'interval' => (string)$this
         );
     }
 
@@ -169,11 +168,11 @@ class Timespan
     }
 
     /**
-     * Convert timespan to an array
+     * Convert to ISO 8601 time interval format
      * @return string
      */
     public function __toString()
     {
-        return $this->start->format('c') . ' - ' . $this->end->format('c');
+        return $this->start->format('c') . '/' . $this->end->format('c');
     }
 }
