@@ -51,7 +51,7 @@ class Timespan
             if ($span->compare($this) <= 0) {
                 // start before/together
                 if ($this->end > $span->end) {
-                    // eindigt erin
+                    // end inside
                     $collection[] = new $this($span->end, $this->end);
                 }
                 // end after/together
