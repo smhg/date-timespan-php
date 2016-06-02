@@ -157,7 +157,8 @@ class Timespan
     public function toArray()
     {
         return array(
-            'interval' => (string)$this
+            'start' => $this->start->format('c'),
+            'end' => $this->end->format('c')
         );
     }
 

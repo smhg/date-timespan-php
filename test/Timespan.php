@@ -50,7 +50,10 @@ class TimespanTest extends PHPUnit_Framework_TestCase
     public function testToArray($span)
     {
         $arr = $span->toArray();
-        $this->assertTrue(isset($arr['interval']));
+        $this->assertTrue(isset($arr['start']));
+        $this->assertTrue(isset($arr['end']));
+        $this->assertTrue(is_string($arr['start']));
+        $this->assertTrue(is_string($arr['end']));
     }
 
     /**
