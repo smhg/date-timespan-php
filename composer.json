@@ -1,6 +1,6 @@
 {
     "name": "smhg/date-timespan",
-    "description": "Timespan classes",
+    "description": "Collection of PHP classes to work with timespans.",
     "license": "MIT",
     "keywords": [
         "timespan"
