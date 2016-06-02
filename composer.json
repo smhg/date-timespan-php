@@ -21,5 +21,8 @@
         "psr-0": {
             "Timespan": "src/"
         }
+    },
+    "scripts": {
+      "test": "phpunit"
     }
 }
