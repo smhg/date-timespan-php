@@ -2,6 +2,6 @@ sudo: false
 language: php
 php:
   - '5.5.9'
-  - '7.022'
+  - '7.0.22'
 notifications:
   email: false
