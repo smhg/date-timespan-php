@@ -19,11 +19,15 @@ class Timespan
     /**
      * Check whether timespan contains a date
      * @param DateTime $date
+     * @param boolean $include_start whether the start is included, false by default
+     * @param boolean $include_end whether the end is included, false by default
      * @return boolean
      */
-    public function contains(DateTime $date)
+    public function contains(DateTime $date, $include_start = false, $include_end = false )
     {
-        return $this->start < $date && $date < $this->end;
+        $date_before_end = ( $include_end ) ? $date <= $this->end : $date < $this->end;
+        $date_after_start = ( $include_start ) ? $this->start <= $date : $this->start < $date;
+        return $date_before_end && $date_after_start;
     }
 
     /**
