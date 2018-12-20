@@ -28,6 +28,8 @@ class TimespanTest extends PHPUnit_Framework_TestCase
         $date = clone $span->start;
         $date->modify('+3 day');
 
+        $this->assertTrue($span->contains($span->start));
+        $this->assertFalse($span->contains($span->end));
         $this->assertTrue($span->contains($date));
         $this->assertFalse($span->contains($date->modify('-1 week')));
     }
