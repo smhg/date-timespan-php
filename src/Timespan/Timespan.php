@@ -17,13 +17,14 @@ class Timespan
     }
 
     /**
-     * Check whether timespan contains a date
+     * Check whether timespan contains a date.
+     * Includes start, excludes end (like PHP's DatePeriod)
      * @param DateTime $date
      * @return boolean
      */
     public function contains(DateTime $date)
     {
-        return $this->start < $date && $date < $this->end;
+        return $this->start <= $date && $date < $this->end;
     }
 
     /**
