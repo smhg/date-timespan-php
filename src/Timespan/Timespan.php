@@ -1,7 +1,7 @@
 <?php
 namespace Timespan;
 
-use \DateTime;
+use \DateTimeInterface;
 use \DateInterval;
 use \DatePeriod;
 
@@ -10,7 +10,7 @@ class Timespan
     public $start;
     public $end;
 
-    public function __construct(DateTime $start, DateTime $end)
+    public function __construct(DateTimeInterface $start, DateTimeInterface $end)
     {
         $this->start = $start;
         $this->end = $end;
@@ -19,10 +19,10 @@ class Timespan
     /**
      * Check whether timespan contains a date.
      * Includes start, excludes end (like PHP's DatePeriod)
-     * @param DateTime $date
+     * @param DateTimeInterface $date
      * @return boolean
      */
-    public function contains(DateTime $date)
+    public function contains(DateTimeInterface $date)
     {
         return $this->start <= $date && $date < $this->end;
     }
@@ -100,11 +100,11 @@ class Timespan
 
     /**
      * Trim timespan to fit within boundaries
-     * @param  DateTime $start
-     * @param  DateTime $end
+     * @param  DateTimeInterface $start
+     * @param  DateTimeInterface $end
      * @return Timespan|null A new, trimmed, timespan or `null` if nothing remains
      */
-    public function trim(DateTime $start, DateTime $end)
+    public function trim(DateTimeInterface $start, DateTimeInterface $end)
     {
         $trimmed = clone $this;
 
