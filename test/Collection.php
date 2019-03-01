@@ -57,7 +57,7 @@ class CollectionTest extends PHPUnit_Framework_TestCase
 
         $c2 = new Collection();
         $c2[] = new Timespan(new DateTime('T8:45:00'), new DateTime('T9:30:00'));
-        $c2[] = new Timespan(new DateTime('T9:40:00'), new DateTime('T10:30:00'));
+        $c2[] = new Timespan(new DateTimeImmutable('T9:40:00'), new DateTimeImmutable('T10:30:00'));
 
         $d = $c1->diff($c2);
 
