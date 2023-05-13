@@ -198,9 +198,15 @@ class Collection extends \ArrayObject
      */
     public function __toString()
     {
-        return implode(array_map(function ($span) {
-            return (string)$span;
-        }, $this->getArrayCopy()), "\n");
+        return implode(
+            '\n',
+            array_map(
+                function ($span) {
+                    return (string)$span;
+                },
+                $this->getArrayCopy()
+            )
+        );
     }
 
     public function __clone()
