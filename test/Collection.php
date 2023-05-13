@@ -5,7 +5,7 @@ require_once __DIR__ . '/../src/Timespan/Collection.php';
 use Timespan\Timespan;
 use Timespan\Collection;
 
-class CollectionTest extends PHPUnit_Framework_TestCase
+class CollectionTest extends PHPUnit\Framework\TestCase
 {
     public function testConstructor()
     {
