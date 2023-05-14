@@ -1,11 +1,12 @@
 <?php
-require_once __DIR__ . '/../src/Timespan/Timespan.php';
-require_once __DIR__ . '/../src/Timespan/Collection.php';
+namespace Timespan\Test;
 
+use \DateTime;
+use \DateTimeImmutable;
 use Timespan\Timespan;
 use Timespan\Collection;
 
-class CollectionTest extends PHPUnit\Framework\TestCase
+class CollectionTest extends \PHPUnit\Framework\TestCase
 {
     public function testConstructor()
     {
