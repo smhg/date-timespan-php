@@ -1,4 +1,4 @@
-date-timespan [![Build status](https://api.travis-ci.org/smhg/date-timespan-php.png)](https://travis-ci.org/smhg/date-timespan-php)
+date-timespan [![CI](https://github.com/smhg/date-timespan-php/workflows/CI/badge.svg)](https://github.com/smhg/date-timespan-php/actions)
 =============
 
 Collection of PHP classes to work with timespans.
