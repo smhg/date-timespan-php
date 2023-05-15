@@ -33,10 +33,11 @@ class Collection extends \ArrayObject
         }
 
         $collection->compress();
+        $arrCollection = (array)$collection;
 
         $resultLength = $result->count();
-        $lastRight = end($collection);
-        $firstRight = reset($collection);
+        $lastRight = end($arrCollection);
+        $firstRight = reset($arrCollection);
         $collectionLength = $collection->count();
 
         $tmp = $result->getArrayCopy();
