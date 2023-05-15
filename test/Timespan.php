@@ -101,7 +101,7 @@ class TimespanTest extends \PHPUnit\Framework\TestCase
         $new->start->modify('-3 days');
         $new->end->modify('-3 days');
         $result = $span->diff($new);
-        $this->assertTrue(count($result) === 1);
+        $this->assertTrue($result->count() === 1);
         $first = reset($result);
         $this->assertEquals($new->end, $first->start);
         $this->assertEquals($original->end, $first->end);
@@ -112,7 +112,7 @@ class TimespanTest extends \PHPUnit\Framework\TestCase
         $new->start->modify('+3 days');
         $new->end->modify('+3 days');
         $result = $span->diff($new);
-        $this->assertTrue(count($result) === 1);
+        $this->assertTrue($result->count() === 1);
         $first = reset($result);
         $this->assertEquals($original->start, $first->start);
         $this->assertEquals($new->start, $first->end);
@@ -123,7 +123,7 @@ class TimespanTest extends \PHPUnit\Framework\TestCase
         $new->start->modify('+3 days');
         $new->end->modify('-3 days');
         $result = $span->diff($new);
-        $this->assertTrue(count($result) === 2);
+        $this->assertTrue($result->count() === 2);
         $first = reset($result);
         $this->assertEquals($original->start, $first->start);
         $this->assertEquals($new->start, $first->end);
@@ -137,7 +137,7 @@ class TimespanTest extends \PHPUnit\Framework\TestCase
         $new->start->modify('+2 weeks');
         $new->end->modify('+2 weeks');
         $result = $span->diff($new);
-        $this->assertTrue(count($result) === 1);
+        $this->assertTrue($result->count() === 1);
         $first = reset($result);
         $this->assertEquals($original->start, $first->start);
         $this->assertEquals($original->end, $first->end);
@@ -152,7 +152,7 @@ class TimespanTest extends \PHPUnit\Framework\TestCase
         $new->start->modify('-3 days');
         $new->end->modify('-3 days');
         $col = $span->merge($new);
-        $this->assertEquals(1, count($col));
+        $this->assertEquals(1, $col->count());
         $this->assertEquals($new->start, $col[0]->start);
         $this->assertEquals($span->end, $col[0]->end);
 
@@ -160,29 +160,29 @@ class TimespanTest extends \PHPUnit\Framework\TestCase
         $new->start->modify('+3 days');
         $new->end->modify('+3 days');
         $col = $span->merge($new);
-        $this->assertEquals(1, count($col));
+        $this->assertEquals(1, $col->count());
 
         $new = clone $span;
         $col = $span->merge($new);
-        $this->assertEquals(1, count($col));
+        $this->assertEquals(1, $col->count());
 
         $new = clone $span;
         $new->start->modify('-3 days');
         $new->end->modify('+3 days');
         $col = $span->merge($new);
-        $this->assertEquals(1, count($col));
+        $this->assertEquals(1, $col->count());
 
         $new = clone $span;
         $new->start->modify('+3 days');
         $new->end->modify('-3 days');
         $col = $span->merge($new);
-        $this->assertEquals(1, count($col));
+        $this->assertEquals(1, $col->count());
 
         $new = clone $span;
         $new->start->modify('+14 days');
         $new->end->modify('+14 days');
         $col = $span->merge($new);
-        $this->assertEquals(2, count($col));
+        $this->assertEquals(2, $col->count());
     }
 
     /**

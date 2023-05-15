@@ -34,10 +34,10 @@ class Collection extends \ArrayObject
 
         $collection->compress();
 
-        $resultLength = count($result);
+        $resultLength = $result->count();
         $lastRight = end($collection);
         $firstRight = reset($collection);
-        $collectionLength = count($collection);
+        $collectionLength = $collection->count();
 
         $tmp = $result->getArrayCopy();
 
@@ -126,7 +126,7 @@ class Collection extends \ArrayObject
     {
         $this->sort();
 
-        $length = count($this);
+        $length = $this->count();
 
         for ($idx1 = 0; $idx1 < $length - 1;) {
             $tmp = $this->getArrayCopy();
@@ -185,7 +185,7 @@ class Collection extends \ArrayObject
      */
     public function isEmpty()
     {
-        return count($this) === 0;
+        return $this->count() === 0;
     }
 
     /**
