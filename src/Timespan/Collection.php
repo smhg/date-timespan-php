@@ -57,6 +57,7 @@ class Collection extends \ArrayObject
                 if ($collection[$idx2]->end <= $tmp[$idx1]->start) {
                     // right item is before current left, go to next right
                     $idx2++;
+
                     continue;
                 }
 
@@ -73,26 +74,28 @@ class Collection extends \ArrayObject
                     array_splice($tmp, $idx1, 1);
                     $idx1--;
                     $resultLength--;
+
                     break;
-                } else {
-                    // replace left item with first item from diff
-                    array_splice($tmp, $idx1, 1, array_splice($diff, 0, 1));
-                    if (!empty($diff)) {
-                        // if diff has second item, insert at right location
-                        for ($idx3 = $idx1 + 1; $idx3 < $resultLength; $idx3++) {
-                            if ($tmp[$idx3]->compare($diff[0]) > 0) {
-                                array_splice($tmp, $idx3, 0, array_splice($diff, 0, 1));
-                                $resultLength++;
-                                break;
-                            }
+                }
 
-                        }
-
-                        // right location = append at end
-                        if (!empty($diff)) {
-                            $tmp[] = $diff[0];
+                // replace left item with first item from diff
+                array_splice($tmp, $idx1, 1, array_splice($diff, 0, 1));
+                if (!empty($diff)) {
+                    // if diff has second item, insert at right location
+                    for ($idx3 = $idx1 + 1; $idx3 < $resultLength; $idx3++) {
+                        if ($tmp[$idx3]->compare($diff[0]) > 0) {
+                            array_splice($tmp, $idx3, 0, array_splice($diff, 0, 1));
                             $resultLength++;
+
+                            break;
                         }
+
+                    }
+
+                    // right location = append at end
+                    if (!empty($diff)) {
+                        $tmp[] = $diff[0];
+                        $resultLength++;
                     }
                 }
             }
@@ -130,27 +133,31 @@ class Collection extends \ArrayObject
 
             $merge = $tmp[$idx1]->merge($tmp[$idx1 + 1])->getArrayCopy();
 
-            if (count($merge) === 2 && $merge == array_slice($tmp, $idx1, 2)) { // no change after merge
+            if (count($merge) === 2 && $merge == array_slice($tmp, $idx1, 2)) {
+                // no change after merge
                 $idx1++;
-            } else { // merge returned something new
-                // replace original elements with first merge result (which is always in order)
-                array_splice($tmp, $idx1, 2, array_splice($merge, 0, 1));
-                $length--;
 
-                // insert remaining merge results at right location
-                for ($idx2 = $idx1 + 1; !empty($merge) && $idx2 < $length; $idx2++) {
-                    if ($tmp[$idx2]->compare($merge[0]) > 0) {
-                        array_splice($tmp, $idx2, 0, array_splice($merge, 0, 1));
-                        $length++;
-                    }
-                }
-
-                // append remaining merge results to end
-                $tmp = array_merge($tmp, $merge);
-                $length += count($merge);
-
-                $this->exchangeArray($tmp);
+                continue;
             }
+
+            // merge returned something new
+            // replace original elements with first merge result (which is always in order)
+            array_splice($tmp, $idx1, 2, array_splice($merge, 0, 1));
+            $length--;
+
+            // insert remaining merge results at right location
+            for ($idx2 = $idx1 + 1; !empty($merge) && $idx2 < $length; $idx2++) {
+                if ($tmp[$idx2]->compare($merge[0]) > 0) {
+                    array_splice($tmp, $idx2, 0, array_splice($merge, 0, 1));
+                    $length++;
+                }
+            }
+
+            // append remaining merge results to end
+            $tmp = array_merge($tmp, $merge);
+            $length += count($merge);
+
+            $this->exchangeArray($tmp);
         }
 
         return $this;

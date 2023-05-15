@@ -48,26 +48,29 @@ class Timespan
 
         if (!$this->overlaps($span)) {
             $collection[] = clone $this;
-        } else {
-            if ($span->compare($this) <= 0) {
-                // start before/together
-                if ($this->end > $span->end) {
-                    // end inside
-                    $collection[] = new $this($span->end, $this->end);
-                }
-                // end after/together
-            } else {
-                // start inside
-                if ($span->end < $this->end) {
-                    // end inside
-                    $collection[] = new $this($this->start, $span->start);
-                    $collection[] = new $this($span->end, $this->end);
-                } else {
-                    // end after/together
-                    $collection[] = new $this($this->start, $span->start);
-                }
-            }
+            return $collection;
         }
+
+        if ($span->compare($this) <= 0) {
+            // start before/together
+            if ($this->end > $span->end) {
+                // end inside
+                $collection[] = new $this($span->end, $this->end);
+            }
+            // end after/together
+            return $collection;
+        }
+
+        // start inside
+        if ($span->end < $this->end) {
+            // end inside
+            $collection[] = new $this($this->start, $span->start);
+            $collection[] = new $this($span->end, $this->end);
+            return $collection;
+        }
+
+        // end after/together
+        $collection[] = new $this($this->start, $span->start);
 
         return $collection;
     }
@@ -85,15 +88,19 @@ class Timespan
             $start = $this->compare($span) > 0 ? $span->start : $this->start;
             $end = $this->end < $span->end ? $span->end : $this->end;
             $result[] = new $this($start, $end);
-        } else {
-            if ($this->compare($span) <= 0) {
-                $result[] = $this;
-                $result[] = $span;
-            } else {
-                $result[] = $span;
-                $result[] = $this;
-            }
+
+            return $result;
         }
+
+        if ($this->compare($span) <= 0) {
+            $result[] = $this;
+            $result[] = $span;
+
+            return $result;
+        }
+
+        $result[] = $span;
+        $result[] = $this;
 
         return $result;
     }
