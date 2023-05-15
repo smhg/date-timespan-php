@@ -14,9 +14,9 @@ class Collection extends \ArrayObject
         if ($mixed instanceof DatePeriod) {
             $length = count($mixed);
             $date = current($mixed);
-            for ($i = 1; $i < $length; $i++) {
-                $this[] = new Timespan($date, $mixed[$i]);
-                $date = $mixed[$i];
+            for ($idx = 1; $idx < $length; $idx++) {
+                $this[] = new Timespan($date, $mixed[$idx]);
+                $date = $mixed[$idx];
             }
         } elseif (is_array($mixed)) {
             $this->exchangeArray($mixed);
@@ -41,47 +41,47 @@ class Collection extends \ArrayObject
 
         $tmp = $result->getArrayCopy();
 
-        $j = 0;
-        for ($i = 0; $i < $resultLength; $i++) {
-            if ($tmp[$i]->end <= $firstRight->start) {
+        $idx2 = 0;
+        for ($idx1 = 0; $idx1 < $resultLength; $idx1++) {
+            if ($tmp[$idx1]->end <= $firstRight->start) {
                 // before first right, go to next
                 continue;
             }
 
-            if ($tmp[$i]->start >= $lastRight->end) {
+            if ($tmp[$idx1]->start >= $lastRight->end) {
                 // after last right, end
                 break;
             }
 
-            for (; $j < $collectionLength;) {
-                if ($collection[$j]->end <= $tmp[$i]->start) {
+            for (; $idx2 < $collectionLength;) {
+                if ($collection[$idx2]->end <= $tmp[$idx1]->start) {
                     // right item is before current left, go to next right
-                    $j++;
+                    $idx2++;
                     continue;
                 }
 
-                if ($collection[$j]->start >= $tmp[$i]->end) {
+                if ($collection[$idx2]->start >= $tmp[$idx1]->end) {
                     // right item is after current left, done
                     break;
                 }
 
                 // right item intersects with current left, do diff
-                $diff = $tmp[$i]->diff($collection[$j])->getArrayCopy();
+                $diff = $tmp[$idx1]->diff($collection[$idx2])->getArrayCopy();
 
                 if (empty($diff)) {
                     // remove left item, proceed to next
-                    array_splice($tmp, $i, 1);
-                    $i--;
+                    array_splice($tmp, $idx1, 1);
+                    $idx1--;
                     $resultLength--;
                     break;
                 } else {
                     // replace left item with first item from diff
-                    array_splice($tmp, $i, 1, array_splice($diff, 0, 1));
+                    array_splice($tmp, $idx1, 1, array_splice($diff, 0, 1));
                     if (!empty($diff)) {
                         // if diff has second item, insert at right location
-                        for ($k = $i + 1; $k < $resultLength; $k++) {
-                            if ($tmp[$k]->compare($diff[0]) > 0) {
-                                array_splice($tmp, $k, 0, array_splice($diff, 0, 1));
+                        for ($idx3 = $idx1 + 1; $idx3 < $resultLength; $idx3++) {
+                            if ($tmp[$idx3]->compare($diff[0]) > 0) {
+                                array_splice($tmp, $idx3, 0, array_splice($diff, 0, 1));
                                 $resultLength++;
                                 break;
                             }
@@ -125,22 +125,22 @@ class Collection extends \ArrayObject
 
         $length = count($this);
 
-        for ($i = 0; $i < $length - 1;) {
+        for ($idx1 = 0; $idx1 < $length - 1;) {
             $tmp = $this->getArrayCopy();
 
-            $merge = $tmp[$i]->merge($tmp[$i + 1])->getArrayCopy();
+            $merge = $tmp[$idx1]->merge($tmp[$idx1 + 1])->getArrayCopy();
 
-            if (count($merge) === 2 && $merge == array_slice($tmp, $i, 2)) { // no change after merge
-                $i++;
+            if (count($merge) === 2 && $merge == array_slice($tmp, $idx1, 2)) { // no change after merge
+                $idx1++;
             } else { // merge returned something new
                 // replace original elements with first merge result (which is always in order)
-                array_splice($tmp, $i, 2, array_splice($merge, 0, 1));
+                array_splice($tmp, $idx1, 2, array_splice($merge, 0, 1));
                 $length--;
 
                 // insert remaining merge results at right location
-                for ($j = $i + 1; !empty($merge) && $j < $length; $j++) {
-                    if ($tmp[$j]->compare($merge[0]) > 0) {
-                        array_splice($tmp, $j, 0, array_splice($merge, 0, 1));
+                for ($idx2 = $idx1 + 1; !empty($merge) && $idx2 < $length; $idx2++) {
+                    if ($tmp[$idx2]->compare($merge[0]) > 0) {
+                        array_splice($tmp, $idx2, 0, array_splice($merge, 0, 1));
                         $length++;
                     }
                 }

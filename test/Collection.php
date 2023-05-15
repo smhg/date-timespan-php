@@ -53,42 +53,42 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
         $firstEnd = clone $collection[0]->end;
         $this->assertEquals($firstEnd->modify('-2 days'), $diff[0]->end);
 
-        $c1 = new Collection();
-        $c1[] = new Timespan(new DateTime('T9:00:00'), new DateTime('T11:30:00'));
+        $spans1 = new Collection();
+        $spans1[] = new Timespan(new DateTime('T9:00:00'), new DateTime('T11:30:00'));
 
-        $c2 = new Collection();
-        $c2[] = new Timespan(new DateTime('T8:45:00'), new DateTime('T9:30:00'));
-        $c2[] = new Timespan(new DateTimeImmutable('T9:40:00'), new DateTimeImmutable('T10:30:00'));
+        $spans2 = new Collection();
+        $spans2[] = new Timespan(new DateTime('T8:45:00'), new DateTime('T9:30:00'));
+        $spans2[] = new Timespan(new DateTimeImmutable('T9:40:00'), new DateTimeImmutable('T10:30:00'));
 
-        $d = $c1->diff($c2);
+        $diff = $spans1->diff($spans2);
 
-        $this->assertEquals(2, count($d));
-        $this->assertEquals($d[0]->start->format('H:i'), '09:30');
-        $this->assertEquals($d[0]->end->format('H:i'), '09:40');
-        $this->assertEquals($d[1]->start->format('H:i'), '10:30');
-        $this->assertEquals($d[1]->end->format('H:i'), '11:30');
+        $this->assertEquals(2, count($diff));
+        $this->assertEquals($diff[0]->start->format('H:i'), '09:30');
+        $this->assertEquals($diff[0]->end->format('H:i'), '09:40');
+        $this->assertEquals($diff[1]->start->format('H:i'), '10:30');
+        $this->assertEquals($diff[1]->end->format('H:i'), '11:30');
 
-        $c1 = new Collection();
-        $c1[] = new Timespan(new DateTime('T9:00:00'), new DateTime('T10:00:00'));
-        $c1[] = new Timespan(new DateTime('T10:15:00'), new DateTime('T10:30:00'));
-        $c1[] = new Timespan(new DateTime('T10:45:00'), new DateTime('T11:30:00'));
-        $c1[] = new Timespan(new DateTime('T11:45:00'), new DateTime('T13:00:00'));
+        $spans1 = new Collection();
+        $spans1[] = new Timespan(new DateTime('T9:00:00'), new DateTime('T10:00:00'));
+        $spans1[] = new Timespan(new DateTime('T10:15:00'), new DateTime('T10:30:00'));
+        $spans1[] = new Timespan(new DateTime('T10:45:00'), new DateTime('T11:30:00'));
+        $spans1[] = new Timespan(new DateTime('T11:45:00'), new DateTime('T13:00:00'));
 
-        $c2 = new Collection();
-        $c2[] = new Timespan(new DateTime('T8:30:00'), new DateTime('T8:45:00'));
-        $c2[] = new Timespan(new DateTime('T9:00:00'), new DateTime('T9:30:00'));
-        $c2[] = new Timespan(new DateTime('T9:45:00'), new DateTime('T11:00:00'));
-        $c2[] = new Timespan(new DateTime('T11:15:00'), new DateTime('T12:00:00'));
+        $spans2 = new Collection();
+        $spans2[] = new Timespan(new DateTime('T8:30:00'), new DateTime('T8:45:00'));
+        $spans2[] = new Timespan(new DateTime('T9:00:00'), new DateTime('T9:30:00'));
+        $spans2[] = new Timespan(new DateTime('T9:45:00'), new DateTime('T11:00:00'));
+        $spans2[] = new Timespan(new DateTime('T11:15:00'), new DateTime('T12:00:00'));
 
-        $d = $c1->diff($c2);
+        $diff = $spans1->diff($spans2);
 
-        $this->assertEquals(3, count($d));
-        $this->assertEquals($d[0]->start->format('H:i'), '09:30');
-        $this->assertEquals($d[0]->end->format('H:i'), '09:45');
-        $this->assertEquals($d[1]->start->format('H:i'), '11:00');
-        $this->assertEquals($d[1]->end->format('H:i'), '11:15');
-        $this->assertEquals($d[2]->start->format('H:i'), '12:00');
-        $this->assertEquals($d[2]->end->format('H:i'), '13:00');
+        $this->assertEquals(3, count($diff));
+        $this->assertEquals($diff[0]->start->format('H:i'), '09:30');
+        $this->assertEquals($diff[0]->end->format('H:i'), '09:45');
+        $this->assertEquals($diff[1]->start->format('H:i'), '11:00');
+        $this->assertEquals($diff[1]->end->format('H:i'), '11:15');
+        $this->assertEquals($diff[2]->start->format('H:i'), '12:00');
+        $this->assertEquals($diff[2]->end->format('H:i'), '13:00');
     }
 
     /**
@@ -114,18 +114,18 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
         $collection = clone $original;
         $tmp = array();
         foreach ($collection as $span) {
-            $n = clone $span;
-            $n->start->modify('+2 days');
-            $n->end->modify('+2 days');
-            $tmp[] = $n;
-            $n = clone $span;
-            $n->start->modify('+1 days');
-            $n->end->modify('+3 days');
-            $tmp[] = $n;
-            $n = clone $span;
-            $n->start->modify('+5 days');
-            $n->end->modify('+7 days');
-            $tmp[] = $n;
+            $newSpan = clone $span;
+            $newSpan->start->modify('+2 days');
+            $newSpan->end->modify('+2 days');
+            $tmp[] = $newSpan;
+            $newSpan = clone $span;
+            $newSpan->start->modify('+1 days');
+            $newSpan->end->modify('+3 days');
+            $tmp[] = $newSpan;
+            $newSpan = clone $span;
+            $newSpan->start->modify('+5 days');
+            $newSpan->end->modify('+7 days');
+            $tmp[] = $newSpan;
         }
         $new = new Collection($tmp);
         $collection->merge($new);

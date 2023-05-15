@@ -9,6 +9,6 @@
     <!--<rule ref="rulesets/cleancode.xml"></rule>-->
     <!--<rule ref="rulesets/codesize.xml"></rule>-->
     <rule ref="rulesets/design.xml"></rule>
-    <!--<rule ref="rulesets/naming.xml"></rule>-->
+    <rule ref="rulesets/naming.xml"></rule>
     <rule ref="rulesets/unusedcode.xml"></rule>
 </ruleset>
