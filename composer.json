@@ -16,7 +16,8 @@
     },
     "require-dev": {
         "phpmd/phpmd": "^2.8",
-        "phpunit/phpunit": "^6||^7||^9"
+        "phpunit/phpunit": "^6||^7||^9",
+        "phpstan/phpstan": "^1.10"
     },
     "autoload": {
         "psr-0": {
@@ -25,6 +26,7 @@
     },
     "scripts": {
       "test": "phpunit",
-      "lint": "phpmd src,test ansi phpmd.xml"
+      "lint": "phpmd src,test ansi phpmd.xml",
+      "analyze": "phpstan analyze"
     }
 }
