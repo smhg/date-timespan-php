@@ -137,7 +137,7 @@ class Timespan
     /**
      * Compare timespan with another timespan
      * @param Timespan $span
-     * @return boolean
+     * @return int
      */
     public function compare(Timespan $span)
     {
