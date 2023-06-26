@@ -12,11 +12,12 @@ class Collection extends \ArrayObject
     public function __construct($mixed = null)
     {
         if ($mixed instanceof DatePeriod) {
-            $length = iterator_count($mixed);
-            $date = current($mixed);
-            for ($idx = 1; $idx < $length; $idx++) {
-                $this[] = new Timespan($date, $mixed[$idx]);
-                $date = $mixed[$idx];
+            $previousDate = null;
+            foreach ($mixed->getIterator() as $date) {
+                if ($previousDate) {
+                    $this[] = new Timespan($previousDate, $date);
+                }
+                $previousDate = $date;
             }
         } elseif (is_array($mixed)) {
             $this->exchangeArray($mixed);

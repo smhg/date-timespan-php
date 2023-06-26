@@ -3,6 +3,8 @@ namespace Timespan\Test;
 
 use \DateTime;
 use \DateTimeImmutable;
+use \DatePeriod;
+use \DateInterval;
 use Timespan\Timespan;
 use Timespan\Collection;
 
@@ -10,6 +12,12 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
 {
     public function testConstructor()
     {
+        $start = new DateTime('now');
+        $period = new DatePeriod($start, new DateInterval('P1D'), 5);
+        $collection = new Collection($period);
+
+        $this->assertEquals(5, count($collection));
+
         $collection = new Collection();
 
         $this->assertTrue($collection->isEmpty());
