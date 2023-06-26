@@ -12,7 +12,7 @@ class Collection extends \ArrayObject
     public function __construct($mixed = null)
     {
         if ($mixed instanceof DatePeriod) {
-            $length = count($mixed);
+            $length = iterator_count($mixed);
             $date = current($mixed);
             for ($idx = 1; $idx < $length; $idx++) {
                 $this[] = new Timespan($date, $mixed[$idx]);
