@@ -3,14 +3,18 @@ namespace Timespan;
 
 use \DatePeriod;
 use \IteratorAggregate;
+use \DateTimeInterface;
+use \ArrayObject;
 
-class Collection extends \ArrayObject
+/**
+ * @extends ArrayObject<int, Timespan>
+ */
+class Collection extends ArrayObject
 {
     /**
-     * Create a new timespan collection
-     * @param DatePeriod|array $mixed
+     * @param DatePeriod|array<Timespan>|null $mixed
      */
-    public function __construct($mixed = null)
+    public function __construct(DatePeriod|array|null $mixed = null)
     {
         if ($mixed instanceof DatePeriod) {
             $iterator = $mixed;
@@ -32,7 +36,10 @@ class Collection extends \ArrayObject
         }
     }
 
-    public function diff(Collection $collection)
+    /**
+     * Get the difference between this and the provided collection
+     */
+    public function diff(Collection $collection): Collection
     {
         $this->compress();
         $result = clone $this;
@@ -118,10 +125,8 @@ class Collection extends \ArrayObject
 
     /**
      * Merge the collection with another collection
-     * @param Collection $collection
-     * @return Collection
      */
-    public function merge(Collection $collection)
+    public function merge(Collection $collection): Collection
     {
         $this->exchangeArray(array_merge($this->getArrayCopy(), $collection->getArrayCopy()));
 
@@ -130,9 +135,8 @@ class Collection extends \ArrayObject
 
     /**
      * Merge timespans in this collection together when possible
-     * @return Collection
      */
-    public function compress()
+    public function compress(): Collection
     {
         $this->sort();
 
@@ -175,9 +179,8 @@ class Collection extends \ArrayObject
 
     /**
      * Sort items in this collection
-     * @return Collection
      */
-    public function sort()
+    public function sort(): Collection
     {
         $this->uasort(function (Timespan $span1, Timespan $span2) {
             return $span1->compare($span2);
@@ -191,18 +194,17 @@ class Collection extends \ArrayObject
 
     /**
      * Returns whether the collection is empty
-     * @return boolean
      */
-    public function isEmpty()
+    public function isEmpty(): bool
     {
         return $this->count() === 0;
     }
 
     /**
      * Converts the collection to an array
-     * @return array
+     * @return array<int, array<string, string>>
      */
-    public function toArray()
+    public function toArray(): array
     {
         return array_map(function ($span) {
             return $span->toArray();
@@ -211,9 +213,8 @@ class Collection extends \ArrayObject
 
     /**
      * Converts the collection to a string
-     * @return string [description]
      */
-    public function __toString()
+    public function __toString(): string
     {
         return implode(
             '\n',
@@ -226,7 +227,7 @@ class Collection extends \ArrayObject
         );
     }
 
-    public function __clone()
+    public function __clone(): void
     {
         foreach ($this as $key => $span) {
             $this[$key] = clone $span;

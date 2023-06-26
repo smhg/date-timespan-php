@@ -7,7 +7,7 @@ use Timespan\Timespan;
 
 class TimespanTest extends \PHPUnit\Framework\TestCase
 {
-    public function testConstructor()
+    public function testConstructor(): Timespan
     {
         $start = new DateTime('this monday');
         $end = clone $start;
@@ -24,7 +24,7 @@ class TimespanTest extends \PHPUnit\Framework\TestCase
     /**
      * @depends testConstructor
      */
-    public function testContains($span)
+    public function testContains(Timespan $span): void
     {
         $date = clone $span->start;
         $date->modify('+3 day');
@@ -38,7 +38,7 @@ class TimespanTest extends \PHPUnit\Framework\TestCase
     /**
      * @depends testConstructor
      */
-    public function testToPeriod($span)
+    public function testToPeriod(Timespan $span): void
     {
         $period = $span->toPeriod(new DateInterval('P1D'));
         $this->assertInstanceOf('DatePeriod', $period);
@@ -50,7 +50,7 @@ class TimespanTest extends \PHPUnit\Framework\TestCase
     /**
      * @depends testConstructor
      */
-    public function testToArray($span)
+    public function testToArray(Timespan $span): void
     {
         $arr = $span->toArray();
         $this->assertTrue(isset($arr['start']));
@@ -62,7 +62,7 @@ class TimespanTest extends \PHPUnit\Framework\TestCase
     /**
      * @depends testConstructor
      */
-    public function testToString($span)
+    public function testToString(Timespan $span): void
     {
         $this->assertTrue(is_string((string)$span));
         $this->assertTrue(stripos((string)$span, '/') !== false);
@@ -71,7 +71,7 @@ class TimespanTest extends \PHPUnit\Framework\TestCase
     /**
      * @depends testConstructor
      */
-    public function testOverlaps($span)
+    public function testOverlaps(Timespan $span): void
     {
         $new = clone $span;
         $new->start->modify('+3 day');
@@ -93,7 +93,7 @@ class TimespanTest extends \PHPUnit\Framework\TestCase
     /**
      * @depends testConstructor
      */
-    public function testDiff($original)
+    public function testDiff(Timespan $original): void
     {
         // cut out at the beginning
         $span = clone $original;
@@ -146,7 +146,7 @@ class TimespanTest extends \PHPUnit\Framework\TestCase
     /**
      * @depends testConstructor
      */
-    public function testMerge($span)
+    public function testMerge(Timespan $span): void
     {
         $new = clone $span;
         $new->start->modify('-3 days');
@@ -188,7 +188,7 @@ class TimespanTest extends \PHPUnit\Framework\TestCase
     /**
      * @depends testConstructor
      */
-    public function testTrim($span)
+    public function testTrim(Timespan $span): void
     {
         $start = clone $span->start;
         $start->modify('+1 day');
@@ -229,7 +229,7 @@ class TimespanTest extends \PHPUnit\Framework\TestCase
     /**
      * @depends testConstructor
      */
-    public function testCompare($span)
+    public function testCompare(Timespan $span): void
     {
         $new = clone $span;
         $new->start->modify('+1 week');

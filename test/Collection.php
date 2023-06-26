@@ -10,7 +10,7 @@ use Timespan\Collection;
 
 class CollectionTest extends \PHPUnit\Framework\TestCase
 {
-    public function testConstructor()
+    public function testConstructor(): Collection
     {
         $start = new DateTime('now');
         $period = new DatePeriod($start, new DateInterval('P1D'), 5);
@@ -47,7 +47,7 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
     /**
      * @depends testConstructor
      */
-    public function testDiff($collection)
+    public function testDiff(Collection $collection): void
     {
         $new = clone $collection;
         foreach ($new as &$span) {
@@ -103,7 +103,7 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
      * Tests sort,compress and merge
      * @depends testConstructor
      */
-    public function testMerge($original)
+    public function testMerge(Collection $original): void
     {
         $collection = clone $original;
         $new = clone $collection;
@@ -147,7 +147,7 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
     /**
      * @depends testConstructor
      */
-    public function testToArray($collection)
+    public function testToArray(Collection $collection): void
     {
         $this->assertTrue(count($collection->toArray()) > 0);
     }
@@ -155,7 +155,7 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
     /**
      * @depends testConstructor
      */
-    public function testToString($collection)
+    public function testToString(Collection $collection): void
     {
         $this->assertTrue(is_string((string)$collection));
     }

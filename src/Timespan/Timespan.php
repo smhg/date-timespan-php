@@ -1,14 +1,16 @@
 <?php
 namespace Timespan;
 
+use \DateTime;
+use \DateTimeImmutable;
 use \DateTimeInterface;
 use \DateInterval;
 use \DatePeriod;
 
 class Timespan
 {
-    public $start;
-    public $end;
+    public DateTime|DateTimeImmutable|null $start = null;
+    public DateTime|DateTimeImmutable|null $end = null;
 
     public function __construct(DateTimeInterface $start, DateTimeInterface $end)
     {
@@ -19,30 +21,24 @@ class Timespan
     /**
      * Check whether timespan contains a date.
      * Includes start, excludes end (like PHP's DatePeriod)
-     * @param DateTimeInterface $date
-     * @return boolean
      */
-    public function contains(DateTimeInterface $date)
+    public function contains(DateTimeInterface $date): bool
     {
         return $this->start <= $date && $date < $this->end;
     }
 
     /**
      * Check whether timespan overlaps with another timespan
-     * @param Timespan $span
-     * @return boolean
      */
-    public function overlaps(Timespan $span)
+    public function overlaps(Timespan $span): bool
     {
         return $this->start <= $span->end && $span->start <= $this->end;
     }
 
     /**
      * Get parts of timespan which don't appear in another timespan
-     * @param Timespan $span
-     * @return Collection
      */
-    public function diff(Timespan $span)
+    public function diff(Timespan $span): Collection
     {
         $collection = new Collection();
 
@@ -77,10 +73,8 @@ class Timespan
 
     /**
      * Merge timespan with another one and return a collection with 1 or 2 new timespans
-     * @param Timespan $span
-     * @return Collection
      */
-    public function merge(Timespan $span)
+    public function merge(Timespan $span): Collection
     {
         $result = new Collection();
 
@@ -107,11 +101,9 @@ class Timespan
 
     /**
      * Trim timespan to fit within boundaries
-     * @param  DateTimeInterface $start
-     * @param  DateTimeInterface $end
      * @return Timespan|null A new, trimmed, timespan or `null` if nothing remains
      */
-    public function trim(DateTimeInterface $start, DateTimeInterface $end)
+    public function trim(DateTimeInterface $start, DateTimeInterface $end): Timespan|null
     {
         $trimmed = clone $this;
 
@@ -136,10 +128,9 @@ class Timespan
 
     /**
      * Compare timespan with another timespan
-     * @param Timespan $span
-     * @return int
+     * @return int<-1,1>
      */
-    public function compare(Timespan $span)
+    public function compare(Timespan $span): int
     {
         if ($this->start == $span->start) {
             return 0;
@@ -149,10 +140,8 @@ class Timespan
 
     /**
      * Convert timespan into a period based on an interval
-     * @param DateInterval $interval
-     * @return DatePeriod
      */
-    public function toPeriod(DateInterval $interval)
+    public function toPeriod(DateInterval $interval): DatePeriod
     {
         $end = clone $this->end;
         return new DatePeriod($this->start, $interval, $end->modify('+1 second'));
@@ -160,9 +149,9 @@ class Timespan
 
     /**
      * Convert timespan to an array
-     * @return array
+     * @return array<string, string>
      */
-    public function toArray()
+    public function toArray(): array
     {
         return array(
             'start' => $this->start->format('c'),
@@ -170,7 +159,7 @@ class Timespan
         );
     }
 
-    public function __clone()
+    public function __clone(): void
     {
         $this->start = clone $this->start;
         $this->end = clone $this->end;
@@ -178,10 +167,9 @@ class Timespan
 
     /**
      * Convert to ISO 8601 time interval format
-     * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->start->format('c') . '/' . $this->end->format('c');
+        return sprintf('%s/%s', $this->start->format('c'), $this->end->format('c'));
     }
 }
