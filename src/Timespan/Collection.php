@@ -2,6 +2,7 @@
 namespace Timespan;
 
 use \DatePeriod;
+use \IteratorAggregate;
 
 class Collection extends \ArrayObject
 {
@@ -12,11 +13,18 @@ class Collection extends \ArrayObject
     public function __construct($mixed = null)
     {
         if ($mixed instanceof DatePeriod) {
+            $iterator = $mixed;
+
+            if ($iterator instanceof IteratorAggregate) {
+                $iterator = $mixed->getIterator();
+            }
+
             $previousDate = null;
-            foreach ($mixed->getIterator() as $date) {
+            foreach ($iterator as $date) {
                 if ($previousDate) {
                     $this[] = new Timespan($previousDate, $date);
                 }
+
                 $previousDate = $date;
             }
         } elseif (is_array($mixed)) {
