@@ -153,6 +153,7 @@ class TimespanTest extends \PHPUnit\Framework\TestCase
         $new->end->modify('-3 days');
         $col = $span->merge($new);
         $this->assertEquals(1, $col->count());
+        $this->assertTrue(isset($col[0]));
         $this->assertEquals($new->start, $col[0]->start);
         $this->assertEquals($span->end, $col[0]->end);
 
@@ -193,6 +194,7 @@ class TimespanTest extends \PHPUnit\Framework\TestCase
         $start = clone $span->start;
         $start->modify('+1 day');
         $trimmed = $span->trim($start, $span->end);
+        $this->assertTrue(!is_null($trimmed));
         $this->assertTrue($trimmed !== $span, 'Trim should not mutate the original span, but return a new one.');
         $this->assertEquals($start, $trimmed->start);
         $this->assertNotEquals($span->start, $trimmed->start);
@@ -200,6 +202,7 @@ class TimespanTest extends \PHPUnit\Framework\TestCase
         $end = clone $span->end;
         $end->modify('-1 day');
         $trimmed = $span->trim($span->start, $end);
+        $this->assertTrue(!is_null($trimmed));
         $this->assertEquals($end, $trimmed->end);
         $this->assertNotEquals($span->end, $trimmed->end);
 

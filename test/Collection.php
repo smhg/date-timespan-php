@@ -57,6 +57,8 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
 
         $diff = $collection->diff($new);
         $this->assertEquals(3, $diff->count());
+        $this->assertTrue(isset($collection[0]));
+        $this->assertTrue(isset($diff[0]));
         $this->assertEquals($collection[0]->start, $diff[0]->start);
         $firstEnd = clone $collection[0]->end;
         $this->assertEquals($firstEnd->modify('-2 days'), $diff[0]->end);
@@ -71,8 +73,10 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
         $diff = $spans1->diff($spans2);
 
         $this->assertEquals(2, $diff->count());
+        $this->assertTrue(isset($diff[0]));
         $this->assertEquals($diff[0]->start->format('H:i'), '09:30');
         $this->assertEquals($diff[0]->end->format('H:i'), '09:40');
+        $this->assertTrue(isset($diff[1]));
         $this->assertEquals($diff[1]->start->format('H:i'), '10:30');
         $this->assertEquals($diff[1]->end->format('H:i'), '11:30');
 
@@ -91,10 +95,13 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
         $diff = $spans1->diff($spans2);
 
         $this->assertEquals(3, $diff->count());
+        $this->assertTrue(isset($diff[0]));
         $this->assertEquals($diff[0]->start->format('H:i'), '09:30');
         $this->assertEquals($diff[0]->end->format('H:i'), '09:45');
+        $this->assertTrue(isset($diff[1]));
         $this->assertEquals($diff[1]->start->format('H:i'), '11:00');
         $this->assertEquals($diff[1]->end->format('H:i'), '11:15');
+        $this->assertTrue(isset($diff[2]));
         $this->assertEquals($diff[2]->start->format('H:i'), '12:00');
         $this->assertEquals($diff[2]->end->format('H:i'), '13:00');
     }
@@ -115,6 +122,8 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
         $collection->merge($new);
 
         $this->assertEquals($original->count(), $collection->count());
+        $this->assertTrue(isset($original[0]));
+        $this->assertTrue(isset($collection[0]));
         $this->assertEquals($original[0]->start, $collection[0]->start);
         $firstEnd = clone $original[0]->end;
         $this->assertEquals($firstEnd->modify('+2 days'), $collection[0]->end);
@@ -139,6 +148,8 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
         $collection->merge($new);
 
         $this->assertEquals($original->count(), $collection->count());
+        $this->assertTrue(isset($original[0]));
+        $this->assertTrue(isset($collection[0]));
         $this->assertEquals($original[0]->start, $collection[0]->start);
         $firstEnd = clone $original[0]->end;
         $this->assertEquals($firstEnd->modify('+7 days'), $collection[0]->end);

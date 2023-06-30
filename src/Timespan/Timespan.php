@@ -3,16 +3,15 @@ namespace Timespan;
 
 use \DateTime;
 use \DateTimeImmutable;
-use \DateTimeInterface;
 use \DateInterval;
 use \DatePeriod;
 
 class Timespan
 {
-    public DateTime|DateTimeImmutable|null $start = null;
-    public DateTime|DateTimeImmutable|null $end = null;
+    public DateTime|DateTimeImmutable $start;
+    public DateTime|DateTimeImmutable $end;
 
-    public function __construct(DateTimeInterface $start, DateTimeInterface $end)
+    public function __construct(DateTime|DateTimeImmutable $start, DateTime|DateTimeImmutable $end)
     {
         $this->start = $start;
         $this->end = $end;
@@ -22,7 +21,7 @@ class Timespan
      * Check whether timespan contains a date.
      * Includes start, excludes end (like PHP's DatePeriod)
      */
-    public function contains(DateTimeInterface $date): bool
+    public function contains(DateTime|DateTimeImmutable $date): bool
     {
         return $this->start <= $date && $date < $this->end;
     }
@@ -103,7 +102,7 @@ class Timespan
      * Trim timespan to fit within boundaries
      * @return Timespan|null A new, trimmed, timespan or `null` if nothing remains
      */
-    public function trim(DateTimeInterface $start, DateTimeInterface $end): Timespan|null
+    public function trim(DateTime|DateTimeImmutable $start, DateTime|DateTimeImmutable $end): Timespan|null
     {
         $trimmed = clone $this;
 
@@ -144,6 +143,7 @@ class Timespan
     public function toPeriod(DateInterval $interval): DatePeriod
     {
         $end = clone $this->end;
+
         return new DatePeriod($this->start, $interval, $end->modify('+1 second'));
     }
 

@@ -71,6 +71,10 @@ class Collection extends ArrayObject
             }
 
             for (; $idx2 < $collectionLength;) {
+                if (!isset($collection[$idx2])) {
+                    throw new Exception(sprintf('Invalid index (%d)', $idx2));
+                }
+
                 if ($collection[$idx2]->end <= $tmp[$idx1]->start) {
                     // right item is before current left, go to next right
                     $idx2++;
