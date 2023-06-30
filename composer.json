@@ -12,11 +12,11 @@
         }
     ],
     "require": {
-        "php": "^8"
+        "php": ">=8.1"
     },
     "require-dev": {
         "phpmd/phpmd": "^2.8",
-        "phpunit/phpunit": "^6||^7||^9",
+        "phpunit/phpunit": "^9.6",
         "phpstan/phpstan": "^1.10"
     },
     "autoload": {
