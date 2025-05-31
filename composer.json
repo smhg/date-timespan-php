@@ -17,7 +17,9 @@
     "require-dev": {
         "phpmd/phpmd": "^2.8",
         "phpunit/phpunit": "^9.6",
-        "phpstan/phpstan": "^1.10"
+        "phpstan/phpstan": "^1.10",
+        "phpstan/extension-installer": "^1.4",
+        "phpstan/phpstan-phpunit": "^1.4"
     },
     "autoload": {
         "psr-0": {
@@ -28,5 +30,10 @@
       "test": "phpunit",
       "lint": "phpmd src,test ansi phpmd.xml",
       "analyze": "phpstan analyze"
+    },
+    "config": {
+        "allow-plugins": {
+            "phpstan/extension-installer": true
+        }
     }
 }
