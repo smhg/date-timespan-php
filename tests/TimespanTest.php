@@ -3,6 +3,7 @@ namespace Timespan;
 
 use DateTime;
 use DateInterval;
+use DatePeriod;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 
@@ -43,7 +44,6 @@ class TimespanTest extends TestCase
     public function testToPeriod(Timespan $span): void
     {
         $period = $span->toPeriod(new DateInterval('P1D'));
-        $this->assertInstanceOf('DatePeriod', $period);
         $arr = iterator_to_array($period);
         $this->assertEquals($span->start, reset($arr));
         $this->assertEquals($span->end, end($arr));
@@ -57,8 +57,6 @@ class TimespanTest extends TestCase
         $arr = $span->toArray();
         $this->assertTrue(isset($arr['start']));
         $this->assertTrue(isset($arr['end']));
-        $this->assertTrue(is_string($arr['start']));
-        $this->assertTrue(is_string($arr['end']));
     }
 
     /**
@@ -66,7 +64,6 @@ class TimespanTest extends TestCase
      */
     public function testToString(Timespan $span): void
     {
-        $this->assertTrue(is_string((string)$span));
         $this->assertTrue(stripos((string)$span, '/') !== false);
     }
 

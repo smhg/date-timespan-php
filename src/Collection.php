@@ -2,7 +2,6 @@
 namespace Timespan;
 
 use DatePeriod;
-use IteratorAggregate;
 use ArrayObject;
 
 /**
@@ -16,11 +15,7 @@ class Collection extends ArrayObject
     public function __construct(DatePeriod|array|null $mixed = null)
     {
         if ($mixed instanceof DatePeriod) {
-            $iterator = $mixed;
-
-            if ($iterator instanceof IteratorAggregate) {
-                $iterator = $mixed->getIterator();
-            }
+            $iterator = $mixed->getIterator();
 
             $previousDate = null;
             foreach ($iterator as $date) {
@@ -220,7 +215,7 @@ class Collection extends ArrayObject
     public function __toString(): string
     {
         return implode(
-            '\n',
+            "\n",
             array_map(
                 function ($span) {
                     return (string)$span;

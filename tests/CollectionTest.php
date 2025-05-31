@@ -169,6 +169,8 @@ class CollectionTest extends TestCase
      */
     public function testToString(Collection $collection): void
     {
-        $this->assertTrue(is_string((string)$collection));
+        $result = (string)$collection;
+
+        $this->assertCount(3, explode("\n", $result));
     }
 }
