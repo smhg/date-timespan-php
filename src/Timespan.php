@@ -1,10 +1,10 @@
 <?php
 namespace Timespan;
 
-use \DateTime;
-use \DateTimeImmutable;
-use \DateInterval;
-use \DatePeriod;
+use DateTime;
+use DateTimeImmutable;
+use DateInterval;
+use DatePeriod;
 
 class Timespan
 {

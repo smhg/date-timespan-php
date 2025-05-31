@@ -16,20 +16,25 @@
     },
     "require-dev": {
         "phpmd/phpmd": "^2.8",
-        "phpunit/phpunit": "^9.6",
+        "phpunit/phpunit": "^10.0",
         "phpstan/phpstan": "^1.10",
         "phpstan/extension-installer": "^1.4",
         "phpstan/phpstan-phpunit": "^1.4",
         "phpstan/phpstan-deprecation-rules": "^1.2"
     },
     "autoload": {
-        "psr-0": {
-            "Timespan": "src/"
+        "psr-4": {
+            "Timespan\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Timespan\\": "tests/"
         }
     },
     "scripts": {
       "test": "phpunit",
-      "lint": "phpmd src,test ansi phpmd.xml",
+      "lint": "phpmd src,tests ansi phpmd.xml",
       "analyze": "phpstan analyze"
     },
     "config": {

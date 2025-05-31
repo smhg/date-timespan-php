@@ -1,11 +1,13 @@
 <?php
-namespace Timespan\Test;
+namespace Timespan;
 
-use \DateTime;
-use \DateInterval;
-use Timespan\Timespan;
+use DateTime;
+use DateInterval;
+use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-class TimespanTest extends \PHPUnit\Framework\TestCase
+#[CoversClass(Timespan::class)]
+class TimespanTest extends TestCase
 {
     public function testConstructor(): Timespan
     {

@@ -1,10 +1,9 @@
 <?php
 namespace Timespan;
 
-use \DatePeriod;
-use \IteratorAggregate;
-use \DateTimeInterface;
-use \ArrayObject;
+use DatePeriod;
+use IteratorAggregate;
+use ArrayObject;
 
 /**
  * @extends ArrayObject<int, Timespan>

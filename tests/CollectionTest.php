@@ -1,14 +1,15 @@
 <?php
-namespace Timespan\Test;
+namespace Timespan;
 
-use \DateTime;
-use \DateTimeImmutable;
-use \DatePeriod;
-use \DateInterval;
-use Timespan\Timespan;
-use Timespan\Collection;
+use DateTime;
+use DateTimeImmutable;
+use DatePeriod;
+use DateInterval;
+use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-class CollectionTest extends \PHPUnit\Framework\TestCase
+#[CoversClass(Collection::class)]
+class CollectionTest extends TestCase
 {
     public function testConstructor(): Collection
     {
