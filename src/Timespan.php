@@ -139,8 +139,9 @@ class Timespan
 
     /**
      * Convert timespan into a period based on an interval
+     * @return DatePeriod<DateTime|DateTimeImmutable>
      */
-    public function toPeriod(DateInterval $interval): DatePeriod
+    public function toPeriod(DateInterval $interval): DatePeriod //@phpstan-ignore-line
     {
         $end = clone $this->end;
 

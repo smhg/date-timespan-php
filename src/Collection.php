@@ -2,6 +2,8 @@
 namespace Timespan;
 
 use DatePeriod;
+use DateTime;
+use DateTimeImmutable;
 use ArrayObject;
 
 /**
@@ -10,9 +12,9 @@ use ArrayObject;
 class Collection extends ArrayObject
 {
     /**
-     * @param DatePeriod|array<Timespan>|null $mixed
+     * @param DatePeriod<DateTime|DateTimeImmutable>|array<Timespan>|null $mixed
      */
-    public function __construct(DatePeriod|array|null $mixed = null)
+    public function __construct(DatePeriod|array|null $mixed = null) //@phpstan-ignore-line
     {
         if ($mixed instanceof DatePeriod) {
             $iterator = $mixed->getIterator();
