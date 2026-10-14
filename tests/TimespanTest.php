@@ -6,6 +6,7 @@ use DateInterval;
 use DatePeriod;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Depends;
 
 #[CoversClass(Timespan::class)]
 class TimespanTest extends TestCase
@@ -24,9 +25,7 @@ class TimespanTest extends TestCase
         return $span;
     }
 
-    /**
-     * @depends testConstructor
-     */
+    #[Depends('testConstructor')]
     public function testContains(Timespan $span): void
     {
         $date = clone $span->start;
@@ -38,9 +37,7 @@ class TimespanTest extends TestCase
         $this->assertFalse($span->contains($date->modify('-1 week')));
     }
 
-    /**
-     * @depends testConstructor
-     */
+    #[Depends('testConstructor')]
     public function testToPeriod(Timespan $span): void
     {
         $period = $span->toPeriod(new DateInterval('P1D'));
@@ -49,9 +46,7 @@ class TimespanTest extends TestCase
         $this->assertEquals($span->end, end($arr));
     }
 
-    /**
-     * @depends testConstructor
-     */
+    #[Depends('testConstructor')]
     public function testToArray(Timespan $span): void
     {
         $arr = $span->toArray();
@@ -59,17 +54,13 @@ class TimespanTest extends TestCase
         $this->assertTrue(isset($arr['end']));
     }
 
-    /**
-     * @depends testConstructor
-     */
+    #[Depends('testConstructor')]
     public function testToString(Timespan $span): void
     {
         $this->assertTrue(stripos((string)$span, '/') !== false);
     }
 
-    /**
-     * @depends testConstructor
-     */
+    #[Depends('testConstructor')]
     public function testOverlaps(Timespan $span): void
     {
         $new = clone $span;
@@ -89,9 +80,7 @@ class TimespanTest extends TestCase
         $this->assertFalse($span->overlaps($new));
     }
 
-    /**
-     * @depends testConstructor
-     */
+    #[Depends('testConstructor')]
     public function testDiff(Timespan $original): void
     {
         // cut out at the beginning
@@ -142,9 +131,7 @@ class TimespanTest extends TestCase
         $this->assertEquals($original->end, $first->end);
     }
 
-    /**
-     * @depends testConstructor
-     */
+    #[Depends('testConstructor')]
     public function testMerge(Timespan $span): void
     {
         $new = clone $span;
@@ -185,9 +172,7 @@ class TimespanTest extends TestCase
         $this->assertEquals(2, $col->count());
     }
 
-    /**
-     * @depends testConstructor
-     */
+    #[Depends('testConstructor')]
     public function testTrim(Timespan $span): void
     {
         $start = clone $span->start;
@@ -228,9 +213,7 @@ class TimespanTest extends TestCase
         $this->assertTrue(!$span->trim($start, $end), 'Trim should not return anything if boundaries touch, but don\'t overlap.');
     }
 
-    /**
-     * @depends testConstructor
-     */
+    #[Depends('testConstructor')]
     public function testCompare(Timespan $span): void
     {
         $new = clone $span;

@@ -7,6 +7,7 @@ use DatePeriod;
 use DateInterval;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Depends;
 
 #[CoversClass(Collection::class)]
 class CollectionTest extends TestCase
@@ -45,9 +46,7 @@ class CollectionTest extends TestCase
         return $collection;
     }
 
-    /**
-     * @depends testConstructor
-     */
+    #[Depends('testConstructor')]
     public function testDiff(Collection $collection): void
     {
         $new = clone $collection;
@@ -109,8 +108,8 @@ class CollectionTest extends TestCase
 
     /**
      * Tests sort,compress and merge
-     * @depends testConstructor
      */
+    #[Depends('testConstructor')]
     public function testMerge(Collection $original): void
     {
         $collection = clone $original;
@@ -156,17 +155,13 @@ class CollectionTest extends TestCase
         $this->assertEquals($firstEnd->modify('+7 days'), $collection[0]->end);
     }
 
-    /**
-     * @depends testConstructor
-     */
+    #[Depends('testConstructor')]
     public function testToArray(Collection $collection): void
     {
         $this->assertTrue(count($collection->toArray()) > 0);
     }
 
-    /**
-     * @depends testConstructor
-     */
+    #[Depends('testConstructor')]
     public function testToString(Collection $collection): void
     {
         $result = (string)$collection;
