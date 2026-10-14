@@ -63,5 +63,8 @@ Sorts the collection based on the start of each timespan.
 #### compress()
 Joins timespans in the collection if they overlap. Also sorts the result.
 
-#### merge()
-Merges the collection with another collection. Also compresses the result.
+#### merge(Collection)
+Returns a new collection with the timespans of both collections merged together. Also compresses the result. Neither collection is modified.
+
+#### diff(Collection)
+Returns a new collection with the parts of the collection's timespans which do not appear in another collection. Neither collection is modified.

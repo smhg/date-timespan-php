@@ -33,18 +33,18 @@ class Collection extends ArrayObject
     }
 
     /**
-     * Get the difference between this and the provided collection
+     * Get the difference between this and the provided collection as a new collection.
+     * Neither this nor the provided collection is modified.
      */
     public function diff(Collection $collection): Collection
     {
-        $this->compress();
-        $result = clone $this;
+        $result = (clone $this)->compress();
 
         if ($collection->isEmpty()) {
             return $result;
         }
 
-        $collection->compress();
+        $collection = (clone $collection)->compress();
         $arrCollection = (array)$collection;
 
         $resultLength = $result->count();
@@ -124,13 +124,15 @@ class Collection extends ArrayObject
     }
 
     /**
-     * Merge the collection with another collection
+     * Merge the collection with another collection into a new collection.
+     * Neither this nor the provided collection is modified.
      */
     public function merge(Collection $collection): Collection
     {
-        $this->exchangeArray(array_merge($this->getArrayCopy(), $collection->getArrayCopy()));
+        $result = clone $this;
+        $result->exchangeArray(array_merge($result->getArrayCopy(), (clone $collection)->getArrayCopy()));
 
-        return $this->compress();
+        return $result->compress();
     }
 
     /**

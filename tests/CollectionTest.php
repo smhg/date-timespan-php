@@ -119,14 +119,14 @@ class CollectionTest extends TestCase
             $span->end->modify('+2 days');
         }
         $new->exchangeArray(array_reverse($new->getArrayCopy()));
-        $collection->merge($new);
+        $merged = $collection->merge($new);
 
-        $this->assertEquals($original->count(), $collection->count());
+        $this->assertEquals($original->count(), $merged->count());
         $this->assertTrue(isset($original[0]));
-        $this->assertTrue(isset($collection[0]));
-        $this->assertEquals($original[0]->start, $collection[0]->start);
+        $this->assertTrue(isset($merged[0]));
+        $this->assertEquals($original[0]->start, $merged[0]->start);
         $firstEnd = clone $original[0]->end;
-        $this->assertEquals($firstEnd->modify('+2 days'), $collection[0]->end);
+        $this->assertEquals($firstEnd->modify('+2 days'), $merged[0]->end);
 
         $collection = clone $original;
         $tmp = array();
@@ -145,14 +145,47 @@ class CollectionTest extends TestCase
             $tmp[] = $newSpan;
         }
         $new = new Collection($tmp);
-        $collection->merge($new);
+        $merged = $collection->merge($new);
 
-        $this->assertEquals($original->count(), $collection->count());
+        $this->assertEquals($original->count(), $merged->count());
         $this->assertTrue(isset($original[0]));
-        $this->assertTrue(isset($collection[0]));
-        $this->assertEquals($original[0]->start, $collection[0]->start);
+        $this->assertTrue(isset($merged[0]));
+        $this->assertEquals($original[0]->start, $merged[0]->start);
         $firstEnd = clone $original[0]->end;
-        $this->assertEquals($firstEnd->modify('+7 days'), $collection[0]->end);
+        $this->assertEquals($firstEnd->modify('+7 days'), $merged[0]->end);
+    }
+
+    public function testDiffAndMergeDoNotModifyInputs(): void
+    {
+        $left = new Collection([
+            new Timespan(new DateTime('2026-01-05'), new DateTime('2026-01-10')),
+            new Timespan(new DateTime('2026-01-01'), new DateTime('2026-01-03')),
+            new Timespan(new DateTime('2026-01-02'), new DateTime('2026-01-04')),
+        ]);
+        $right = new Collection([
+            new Timespan(new DateTime('2026-01-08'), new DateTime('2026-01-09')),
+            new Timespan(new DateTime('2026-01-02'), new DateTime('2026-01-03')),
+        ]);
+        $leftBefore = (string)$left;
+        $rightBefore = (string)$right;
+
+        $diff = $left->diff($right);
+        $merged = $left->merge($right);
+
+        $this->assertSame($leftBefore, (string)$left);
+        $this->assertSame($rightBefore, (string)$right);
+        $this->assertNotSame($left, $diff);
+        $this->assertNotSame($left, $merged);
+
+        // results don't share date objects with the inputs
+        foreach ([$diff, $merged] as $result) {
+            foreach ($result as $span) {
+                $span->start->modify('+1 year');
+                $span->end->modify('+1 year');
+            }
+        }
+        $this->assertSame($leftBefore, (string)$left);
+        $this->assertSame($rightBefore, (string)$right);
     }
 
     #[Depends('testConstructor')]
